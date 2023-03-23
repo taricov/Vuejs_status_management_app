@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Management App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@3.x/dist/vuetify.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css" rel="stylesheet">
+  <style>
+    .ag-format-container {
+      width: 1142px;
+      margin: 0 auto;
+    }
+
+    /* 
+body {
+  background-color: #000;
+} */
+    .ag-courses_box {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: start;
+      -ms-flex-align: start;
+      align-items: flex-start;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+
+      padding: 50px 0;
+    }
+
+    .ag-courses_item {
+      -ms-flex-preferred-size: calc(33.33333% - 30px);
+      flex-basis: calc(33.33333% - 30px);
+
+      margin: 0 15px 30px;
+
+      overflow: hidden;
+
+      border-radius: 28px;
+    }
+
+    .ag-courses-item_link {
+      display: block;
+      padding: 30px 20px;
+      background-color: #121212;
+
+      overflow: hidden;
+
+      position: relative;
+    }
+
+    .ag-courses-item_link:hover,
+    .ag-courses-item_link:hover .ag-courses-item_date {
+      text-decoration: none;
+      color: #FFF;
+    }
+
+    .ag-courses-item_link:hover .ag-courses-item_bg {
+      -webkit-transform: scale(10);
+      -ms-transform: scale(10);
+      transform: scale(10);
+    }
+
+    .ag-courses-item_title {
+      min-height: 87px;
+      margin: 0 0 25px;
+
+      overflow: hidden;
+
+      font-weight: bold;
+      font-size: 30px;
+      color: #FFF;
+
+      z-index: 2;
+      position: relative;
+    }
+
+    .ag-courses-item_date-box {
+      font-size: 18px;
+      color: #FFF;
+
+      z-index: 2;
+      position: relative;
+    }
+
+    .ag-courses-item_date {
+      font-weight: bold;
+      color: #297ce1;
+
+      -webkit-transition: color .5s ease;
+      -o-transition: color .5s ease;
+      transition: color .5s ease
+    }
+
+    .ag-courses-item_bg {
+      height: 128px;
+      width: 128px;
+      background-color: #3ecd5e;
+
+      z-index: 1;
+      position: absolute;
+      top: -75px;
+      right: -75px;
+
+      border-radius: 50%;
+
+      -webkit-transition: all .5s ease;
+      -o-transition: all .5s ease;
+      transition: all .5s ease;
+    }
+
+    .ag-courses_item:nth-child(2n) .ag-courses-item_bg {
+      background-color: #3ecd5e;
+    }
+
+    .ag-courses_item:nth-child(3n) .ag-courses-item_bg {
+      background-color: #e44002;
+    }
+
+    .ag-courses_item:nth-child(4n) .ag-courses-item_bg {
+      background-color: #952aff;
+    }
+
+    .ag-courses_item:nth-child(5n) .ag-courses-item_bg {
+      background-color: #cd3e94;
+    }
+
+    .ag-courses_item:nth-child(6n) .ag-courses-item_bg {
+      background-color: #4c49ea;
+    }
+
+
+
+    @media only screen and (max-width: 979px) {
+      .ag-courses_item {
+        -ms-flex-preferred-size: calc(50% - 30px);
+        flex-basis: calc(50% - 30px);
+      }
+
+      .ag-courses-item_title {
+        font-size: 24px;
+      }
+    }
+
+    @media only screen and (max-width: 767px) {
+      .ag-format-container {
+        width: 96%;
+      }
+
+    }
+
+    @media only screen and (max-width: 639px) {
+      .ag-courses_item {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+      }
+
+      .ag-courses-item_title {
+        min-height: 72px;
+        line-height: 1;
+
+        font-size: 24px;
+      }
+
+      .ag-courses-item_link {
+        padding: 22px 40px;
+      }
+
+      .ag-courses-item_date-box {
+        font-size: 16px;
+      }
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif !important;
+
+    }
+
+    a.v-btn {
+      text-decoration: none;
+    }
+
+    .min-h-card {
+      min-height: 164px;
+    }
+
+    .view__btn {
+      transition: .5s;
+    }
+
+    .hover__card {
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+    }
+
+    .hover__card:hover {
+      box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+
+    }
+
+    .v-btn__content {
+      text-decoration: none;
+    }
+
+    .view__btn:hover {
+      filter: brightness(120%);
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+  <div id="app" class="p-8"></div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@3.x/dist/vuetify.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+  <script>
+    const {
+      createApp,
+      ref
+    } = Vue;
+    const {
+      createVuetify
+    } = Vuetify;
+    const vuetify = createVuetify();
+
+    const app = createApp({
+      template: `
+           
+      <form @submit.prevent="filterRez">
+          <v-select
+          clearable
+          chips
+          label="Select Status"
+          :items="Object.values(invStatus)"
+          v-model="selectedStatus2"
+          >
+          </v-select>
+
+          <date-picker inputLabel="From Date" v-model="startDate"></date-picker>
+          <date-picker inputLabel="To Date" v-model="endDate"></date-picker>
+
+
+
+
+          
+          <v-btn data-start="{{selectedStatus.value}}" style="color:#fff;margin-right:4px" color="#4caf50" type="submit">Filter</v-btn>
+          <v-btn @click="filterReset" style="color:#fff" color="#af4c4c" type="reset">Reset</v-btn>
+      </form>
+
+
+
+      <v-container>
+
+            <div class="row w-100 m-x-auto">
+      <div class="col-lg-4 p-2 text-center" v-for="inv in allinvsData" >
+
+
+
+
+
+
+
+        
+  <v-card class="p-2 hover__card min-h-card rounded" variant="tonal">
+<div class="ag-courses-item_bg" :style="{backgroundColor: [inv.Invoice.follow_up_status != null ? invStatusColors[inv.Invoice.follow_up_status] : invStatusColors[1000]]}"></div>
+
+<div class="p-2">
+
+
+<div class="d-flex justify-content-between">
+  <div class="d-flex">
+
+    </div>
+  
+  </div>
+
+
+
+  <div>    
+<v-card-text v-text="inv.Invoice.client_business_name" class="m-auto fs-20 font-weight-semibold w-75"></v-card-text>
+<v-card-text color="blue" class="fs-24 font-weight-semibold">
+  <span v-text="inv.Invoice.currency_code == 'USD' ? '$' : inv.Invoice.currency_code"></span>
+  <span v-text="formatNum(inv.Invoice.summary_total)"></span>
+  <br/><span style="font-size:10px;font-style:italic" v-text="inv.Invoice.date"></span>
+  <span style="font-size:10px;font-style:italic;text-decoration:underline" v-text="inv.Invoice.no"></span>
+  </v-card-text>
+
+
+   
+    </div>
+    <v-chip :color="inv.Invoice.follow_up_status != null ? invStatusColors[inv.Invoice.follow_up_status] : invStatusColors[1000]" text-color="white" variant="elevated" >
+      <span>
+      <v-icon start icon="mdi-alert-decagram"></v-icon>
+      </span>
+    <span v-text="inv.Invoice.follow_up_status != null ? invStatus[inv.Invoice.follow_up_status] : 'No Status'">
+      </span></v-chip>
+
+    <v-chip class="ma-2" variant="text">
+    <span><v-icon start icon="mdi-bank"></v-icon></span>
+    <span v-text="inv.Invoice.payment_status != null ? payStatus[inv.Invoice.payment_status] : 'No Payment Staus'"></span>
+    </v-chip>
+
+    </div>
+
+<div class="text-center">
+
+  <v-card-actions>
+    <v-btn :href="'/owner/invoices/view/' + inv.Invoice.id" tag="a" target="blank" variant="tonal" class="view__btn">View</v-btn>
+  </v-card-actions>
+</v-card>
+  
+
+
+
+
+  </div>
+
+  <div class="text-center w-100">
+    <v-pagination
+      v-model="page"
+      :length="pages"
+      :total-visible="5"
+      @click="onChangePage"
+    ></v-pagination>
+  </div>
+
+    </div>
+    
+  </v-container>
+
+      `,
+      data: () => {
+        const selectedIcons = {
+          "0": "mdi-credit-card-remove-outline",
+          "1": "mdi-credit-card-fast-outline",
+          "2": "mdi-credit-card-check-outline",
+          "3": "mdi-credit-card-refund-outline",
+          "1000": "mdi-credit-card-search-outline",
+        }
+        const clients = ref([])
+        const payStatus = {
+          "0": "Unpaid",
+          "1": "Partially Paid",
+          "2": "Paid",
+          "3": "Refunded",
+          "4": "Overpaid",
+          "5": "Partially Refunded",
+          "-1": "Draft",
+          "-2": "Due",
+          "-3": "Overdue",
+        }
+
+        const invStatus = {
+          "6": "Confirmed",
+          "7": "On Hold",
+          "8": "Qoute",
+        }
+        const invStatuss = {
+          "Confirmed": "6",
+          "On Hold": "7",
+          "Qoute": "8",
+        }
+        const invStatusColors = {
+          "6": "#4caf50",
+          "7": "#af4c4c",
+          "8": "#4c66af",
+          "1000": "#bbb"
+        }
+        const invStatus2 = [{
+            id: "6",
+            label: "Confirmed"
+          },
+          {
+            id: "7",
+            label: "On Hold"
+          },
+          {
+            id: "8",
+            label: "Qoute"
+          }
+
+        ]
+        const allinvsData = ref([]);
+        const page = 1;
+        const cardsLimit = 15
+        const pages = "";
+        let selectedStatus = ref([])
+        let selectedStatus2 = []
+        let startDate = ""
+        let endDate = ""
+        const url =
+          `/api2/invoices/`
+        return {
+          invStatus,
+          selectedStatus,
+          selectedStatus2,
+          payStatus,
+          invStatusColors,
+          allinvsData,
+          clients,
+          startDate,
+          endDate,
+          page,
+          pages,
+          url,
+          urlStatus: "",
+          cardsLimit,
+          invStatuss
+        };
+      },
+      computed() {
+        // this.urlStatus = selectedStatus2[0]
+      },
+      methods: {
+        formatNum: (x) => {
+          return x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        },
+        filterRez() {
+          this.page = 1
+          console.log(this.endDate, this.startDate, this.selectedStatus2)
+          this.url =
+            `/api2/invoices?limit=${this.cardsLimit}&date_to=${this.endDate}&date_from=${this.startDate}&follow_up_status=${this.invStatuss[this.selectedStatus2]}`
+          fetch(this.url)
+            .then(res => res.json())
+            .then(data => {
+              this.allinvsData =
+                data.data
+              this.pages = data.pagination.page_count
+              console.log(this.url, data.data);
+            })
+
+        },
+        onChangePage() {
+          this.url =
+            `/api2/invoices?limit=${this.cardsLimit}&date_to=${this.endDate}&date_from=${this.startDate}&follow_up_status=${this.urlStatus}&page=${this.page}`
+          console.log(this.url)
+          fetch(
+              this.url
+            )
+            .then(res => res.json())
+            .then(data => {
+              this.allinvsData =
+                data.data
+              this.pages = data.pagination.page_count
+              console.log(this.url, data.data)
+            })
+
+        },
+        filterReset() {
+          this.selectedStatus.value = ""
+          this.selectedStatus2 = []
+          this.startDate = ""
+          this.endDate = ""
+
+
+        },
+
+      },
+
+      beforeMount: async function () {
+        fetch(this.url)
+          .then(res => res.json())
+          .then(data => {
+            this.allinvsData =
+              data.data
+            this.pages = data.pagination.page_count
+
+          })
+
+      },
+    });
+
+    app.component('DatePicker', {
+      template: `
+    <div class="form-group">
+      <label for="datepicker" v-text="inputLabel"></label>
+      <input 
+        class="form-control" 
+        type="text"
+        placeholder="YYYY-MM-DD" 
+        :value="date"
+        ref="picker"
+        @input="updateVal($event.target.value)"
+        
+        />
+    </div>
+  `,
+      props: ["inputLabel", "date"],
+      data() {
+        return {
+          // date: moment(new Date()).format()
+        }
+      },
+      methods: {
+        updateVal(date) {
+          this.$emit("input", date)
+        }
+      },
+      mounted() {
+        var picker = new Pikaday({
+          field: this.$refs.picker,
+          format: "YYYY-MM-DD",
+          onSelect: () => {
+            this.$emit('change', picker.toString());
+          }
+        });
+      }
+    });
+
+
+    app.use(vuetify).mount("#app");
+  </script>
+</body>
+
+</html>
